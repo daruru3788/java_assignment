@@ -2,8 +2,8 @@ import java.util.Scanner;
 
 public class Rpg_before_class {
     static Scanner in = new Scanner(System.in);
-    static int hero_level, hero_power, hero_hp, hero_defense, hero_mp, hero_experience, hero_money, hero_max_hp;
-    static int monster_hp, monster_defense, monster_power, monster_mp, monster_level, monster_experience, monster_money;
+    static int hero_level, hero_power, hero_hp, hero_defense, hero_mp, hero_experience, hero_money, hero_max_hp, hero_speed;
+    static int monster_hp, monster_defense, monster_power, monster_mp, monster_level, monster_experience, monster_money, monster_speed;
     static String hero_name, monster_name;
     static int choice;
 
@@ -94,16 +94,25 @@ public class Rpg_before_class {
             case 2:
                 reset_monster("살쾡이");
                 break;
+            default:
+                System.out.println("올바른 선택지가 아니므로 너구리를 선택합니다.");
+                reset_monster("너구리");
+                break;
         }
         System.out.println();
         System.out.println("전투에 돌입합니다.");
 
+        int heroTurnTimer = 200 - hero_speed;
+        int monsterTurnTimer = 200 - monster_speed;
+        int Timer = 0;
+
         while (true) {
-            if (monster_attacked(hero_attack())) {
+            Timer++;
+            if (heroTurnTimer % Timer == 0 && monster_attacked(hero_attack())) {
                 check_level_up();
                 break;
             }
-            if (hero_attacked(monster_attack())) {
+            if (monsterTurnTimer % Timer == 0 && hero_attacked(monster_attack())) {
                 reset_hero();
                 show_profile();
                 break;
@@ -123,6 +132,7 @@ public class Rpg_before_class {
             monster_defense = 5;
             monster_money = 10;
             monster_experience = 10;
+            monster_speed = 80;
         } else if (monster.equals("살쾡이")) {
             monster_name = monster;
             monster_hp = 2000;
@@ -132,6 +142,7 @@ public class Rpg_before_class {
             monster_defense = 20;
             monster_money = 30;
             monster_experience = 50;
+            monster_speed = 120;
         }
     }
 
@@ -168,6 +179,7 @@ public class Rpg_before_class {
                         break;
                     }
                     hero_power += 3;
+                    hero_money -= 30;
                     System.out.println("구입이 완료됐습니다.");
                     System.out.println("힘이 3만큼 상승했습니다.");
                     show_profile();
@@ -178,6 +190,7 @@ public class Rpg_before_class {
                         break;
                     }
                     hero_defense += 3;
+                    hero_money -= 30;
                     System.out.println("구입이 완료됐습니다.");
                     System.out.println("방어력이 3만큼 상승했습니다.");
                     show_profile();
@@ -188,6 +201,7 @@ public class Rpg_before_class {
                         break;
                     }
                     hero_experience += 50;
+                    hero_money -= 100;
                     System.out.println("구입이 완료됐습니다.");
                     System.out.println("경험치가 50만큼 상승했습니다.");
                     check_level_up();
@@ -200,6 +214,7 @@ public class Rpg_before_class {
                     }
                     hero_max_hp += 50;
                     hero_hp += 50;
+                    hero_money -= 10;
                     System.out.println("구입이 완료됐습니다.");
                     System.out.println("최대 체력이 50만큼 상승했습니다.");
                     show_profile();
@@ -211,16 +226,33 @@ public class Rpg_before_class {
                     }
                     System.out.println("구입이 완료됐습니다.");
                     hero_mp += 50;
+                    hero_money -= 10;
                     System.out.println("MP가 50만큼 상승했습니다.");
                     show_profile();
                     break;
                 case 6:
+                    if (hero_money < 100) {
+                        System.out.println("골드가 부족합니다.");
+                        break;
+                    }
+                    if (hero_speed + 10 > 150) {
+                        System.out.println("속도는 150보다 더 높아질 수 없습니다.");
+                        break;
+                    }
+                    hero_speed += 10;
+                    hero_money -= 100;
+                    System.out.println("구입이 완료됐습니다.");
+                    System.out.println("속도가 10만큼 상승했습니다.");
+                    show_profile();
+                    break;
+                case 7:
                     exit = true;
                     break;
                 default:
                     System.out.println("올바른 선택지를 입력해주세요.");
             }
             if (exit) {
+                exit = false;
                 break;
             }
         }
@@ -236,6 +268,7 @@ public class Rpg_before_class {
         System.out.println("현재 " + hero_name + "의 힘 : " + hero_power);
         System.out.println("현재 " + hero_name + "의 방어력 : " + hero_defense);
         System.out.println("현재 " + hero_name + "의 체력 : " + hero_hp);
+        System.out.println("현재 " + hero_name + "의 속도 : " + hero_speed);
         System.out.println("현재 " + hero_name + "의 경험치 : " + hero_experience);
         System.out.println("현재 " + hero_name + "의 골드 : " + hero_money);
         System.out.println();
@@ -249,5 +282,6 @@ public class Rpg_before_class {
         hero_hp = 80;
         hero_experience = 0;
         hero_money = 0;
+        hero_speed = 100;
     }
 }
