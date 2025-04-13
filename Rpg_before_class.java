@@ -107,12 +107,12 @@ public class Rpg_before_class {
         int Timer = 0;
 
         while (true) {
-            Timer++;
-            if (heroTurnTimer % Timer == 0 && monster_attacked(hero_attack())) {
+            Timer += 10;
+            if (Timer % heroTurnTimer == 0 && monster_attacked(hero_attack())) {
                 check_level_up();
                 break;
             }
-            if (monsterTurnTimer % Timer == 0 && hero_attacked(monster_attack())) {
+            if (Timer % monsterTurnTimer == 0 && hero_attacked(monster_attack())) {
                 reset_hero();
                 show_profile();
                 break;
@@ -169,7 +169,8 @@ public class Rpg_before_class {
             System.out.println("3. 경험치 증가 포션 (100원)");
             System.out.println("4. HP 증강 포션 (10원)");
             System.out.println("5. MP 증강 포션 (10원)");
-            System.out.println("6. 나가기");
+            System.out.println("6. 속도 증가 포션 (100원)");
+            System.out.println("7. 나가기");
             System.out.print("원하시는 물건을 입력하세요: ");
             choice = in.nextInt();
             switch (choice) {
@@ -258,12 +259,12 @@ public class Rpg_before_class {
         }
     }
 
-    //유틸리티
+    //영웅 상태 관리
 
     public static void show_profile() {
         System.out.println("********************");
         System.out.println();
-        System.out.println("현재 영웅의 이름 : " + hero_name);
+        System.out.println("영웅의 이름 : " + hero_name);
         System.out.println("현재 " + hero_name + "의 레벨 : " + hero_level);
         System.out.println("현재 " + hero_name + "의 힘 : " + hero_power);
         System.out.println("현재 " + hero_name + "의 방어력 : " + hero_defense);
