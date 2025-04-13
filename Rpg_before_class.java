@@ -55,6 +55,7 @@ public class Rpg_before_class {
             if (hero_hp < 0) {
                 System.out.println(hero_name + "가 죽었습니다.");
                 reset_hero();
+                show_profile();
                 return true;
             }
         }
@@ -113,8 +114,6 @@ public class Rpg_before_class {
                 break;
             }
             if (Timer % monsterTurnTimer == 0 && hero_attacked(monster_attack())) {
-                reset_hero();
-                show_profile();
                 break;
             }
         }
